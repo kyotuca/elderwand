@@ -2,19 +2,24 @@ package main
 
 import (
 	"html/template"
+	"log"
+	"net/http"
 	"strings"
 	"time"
+
+	routerpkg "github.com/kyotuca/elderwand/cmd/http"
 )
 
-type Page struct {
-	Title  string
-	Body   []byte
-	Player string
-}
+func render(writer http.ResponseWriter, name string, data any) {
+	tpl := template.Must(template.ParseFiles(
+		"views/layout/base.html",
+		"views/partials/nav.html",
+		"views/pages/"+name+".html",
+	))
 
-func loadPage() *Page {
-	body := []byte{0}
-	return &Page{Title: "foo", Body: body, Player: "bar"}
+	if err := tpl.ExecuteTemplate(writer, "base", data); err != nil {
+		http.Error(writer, err.Error(), 500)
+	}
 }
 
 func processTemplate() *template.Template {
@@ -30,4 +35,13 @@ func processTemplate() *template.Template {
 			return t.Format("01 Jan 1970")
 		},
 	}).ParseGlob("views/**/*.html"))
+}
+
+func main() {
+	mux := http.NewServeMux()
+	mux.Handle("/app.css", http.FileServer(http.Dir("public")))
+	app := routerpkg.New(render)
+	mux.Handle("/", app)
+	log.Println("http://localhost:8081")
+	_ = http.ListenAndServe("localhost:8081", mux)
 }

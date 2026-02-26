@@ -1,4 +1,4 @@
-package http
+package routerpkg
 
 import (
 	"net/http"
@@ -14,7 +14,7 @@ type Router struct {
 func New(render func(http.ResponseWriter, string, any)) http.Handler {
 	r := &Router{render: render}
 	mux := chi.NewRouter()
-	mux.Get("/home", r.Home)
+	mux.Get("/", r.Home)
 	return mux
 }
 
