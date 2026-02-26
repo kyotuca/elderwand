@@ -2,7 +2,6 @@ package main
 
 import (
 	"html/template"
-	"net/http"
 	"strings"
 	"time"
 )
@@ -11,10 +10,6 @@ type Page struct {
 	Title  string
 	Body   []byte
 	Player string
-}
-
-type Router struct {
-	render func(http.ResponseWriter, string, any)
 }
 
 func loadPage() *Page {
