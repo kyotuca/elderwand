@@ -1,4 +1,7 @@
-package routerpkg
+/*
+Package router is a simple http router to show the correct page
+*/
+package router
 
 import (
 	"net/http"
