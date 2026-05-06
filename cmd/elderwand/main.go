@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	routerpkg "github.com/kyotuca/elderwand/cmd/http"
+	routerpkg "github.com/kyotuca/elderwand/internal/router"
 )
 
 func render(writer http.ResponseWriter, name string, data any) {
